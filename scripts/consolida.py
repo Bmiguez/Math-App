@@ -141,6 +141,15 @@ for r in (json.load(open(f)) if f else []):
             Incentivo='Não informado', Texto_bruto=r.get('Review') or '', Link=r['_url'], Produto_elegivel=True,
             Coletado_em=r['_coletado_em'], autor=(r.get('User') or {}).get('Name'), data_hora=r.get('Date'))
 
+# 9) Mercado Livre (API oficial, opiniões de catálogo; ver coleta_mercadolivre.py)
+f = ultimo('mercadolivre/reviews_*.json')
+for r in (json.load(open(f)) if f else []):
+    add(ID_origem='ml:' + str(r['id']), Marca=MARCA_VAREJO[r['_marca']], Fonte='Mercado Livre', Mercado='BR',
+        Tipo_fonte='Marketplace independente', Produto=r['_produto'], Nota=r.get('rate'), Data=(r.get('date_created') or '')[:10],
+        Compra_verificada='Sim',  # no ML só quem comprou pode opinar
+        Incentivo='Não informado', Texto_bruto=' '.join(x for x in (r.get('title'), r.get('content')) if x),
+        Link=r['_url'], Produto_elegivel=True, Coletado_em=r['_coletado_em'], autor=r.get('_autor_hash'), data_hora=r.get('date_created'))
+
 # Deduplicação: (a) ID_origem; (b) texto normalizado + data + nota (entre fontes)
 dup = collections.Counter()
 vistos_id, vistos_txt, vistos_aut = {}, {}, {}
@@ -164,7 +173,9 @@ for l in linhas:
         vistos_aut[k2] = l['ID_origem']
 
 # IDs pseudônimos estáveis: quem já existia na v2 mantém o ID (a codificação depende dele); novos recebem o próximo número
-ids_ant = json.load(open(OUT / 'ids_v2.json')) if (OUT / 'ids_v2.json').exists() else {}
+# usa o mapa mais recente (ids_v3 congela também os IDs novos da v3; sem ele, uma fonte nova renumeraria as reviews da v3)
+_f_ids = sorted(OUT.glob('ids_v*.json'), key=lambda f: int(f.stem.split('_v')[1]))
+ids_ant = json.load(open(_f_ids[-1])) if _f_ids else {}
 cont = collections.Counter()
 for idv in ids_ant.values():
     p, n = idv.split('-'); cont[p] = max(cont[p], int(n))

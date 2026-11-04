@@ -76,12 +76,17 @@ wb = openpyxl.load_workbook(RAIZ / 'entrada' / 'reviews_cafe_funcional_v1.xlsx')
 ws = wb['Base_reviews']
 rows = list(ws.iter_rows(values_only=True)); h = list(rows[0])
 v1codes = h[13:37]
-ids_ant = json.load(open(T / 'ids_v2.json')) if (T / 'ids_v2.json').exists() else {}
+_f_ids = sorted(T.glob('ids_v*.json'), key=lambda f: int(f.stem.split('_v')[1]))
+ids_ant = json.load(open(_f_ids[-1])) if _f_ids else {}
+# com dado novo do Mercado Livre, as linhas herdadas da v1 dessa fonte saem (o dado coletado substitui a paráfrase)
+ml_novo = any(r['Fonte'] == 'Mercado Livre' for r in final)
 prox = {p: max([int(r['ID'][3:]) for r in final if r['ID'].startswith(p)] + [int(v[3:]) for v in ids_ant.values() if v.startswith(p)])
         for p in ('CA', 'DE')}
 for row in rows[1:]:
     d = dict(zip(h, row))
     if d['Fonte'] not in ('Magazine Luiza', 'Amazon (via Buscapé)', 'Amazon (via Zoom)', 'Mercado Livre'):
+        continue
+    if ml_novo and d['Fonte'] == 'Mercado Livre':
         continue
     p = 'CA' if d['Marca'].startswith('Caffeine') else 'DE'
     if 'v1:' + d['ID'] in ids_ant:
