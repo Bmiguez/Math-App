@@ -8,6 +8,12 @@ RAIZ = pathlib.Path(__file__).resolve().parent.parent
 B = RAIZ / 'saida' / 'bruto'
 OUT = RAIZ / 'saida' / 'trabalho'; OUT.mkdir(parents=True, exist_ok=True)
 CA, DE = 'Caffeine Army (SuperCoffee)', 'Desincoffee (Super Nutrition/Desinchá)'
+BS, UC = 'Brainstorm Coffee (Essential Nutrition)', 'Ultracoffee (3corações / Plant Power)'
+VC, MC = 'V-Coffee Energy Boost (Vitafor)', 'Mega Coffee (Allure)'
+PREF = {CA: 'CA', DE: 'DE', BS: 'BS', UC: 'UC', VC: 'VC', MC: 'MC'}
+MARCA_VAREJO = {'Caffeine Army': CA, 'Desincoffee': DE, 'Brainstorm Coffee': BS, 'Ultracoffee': UC, 'V-Coffee': VC, 'Mega Coffee': MC}
+LOJA = {'www.drogariasaopaulo.com.br': 'Drogaria São Paulo', 'www.drogariaspacheco.com.br': 'Drogarias Pacheco',
+        'www.americanas.com.br': 'Americanas', 'www.paguemenos.com.br': 'Pague Menos', 'www.drogal.com.br': 'Drogal'}
 
 
 def ultimo(pat):
@@ -84,17 +90,56 @@ for r in json.load(open(f)):
         Incentivo=inc, Texto_bruto=txt, Link='https://thingtesting.com/brands/caffeine-army/reviews',
         Produto_elegivel=True, Coletado_em=ts)
 
-# 5) Home Tester Club
-f = ultimo('hometesterclub/reviews_*.json')
-d = json.load(open(f))
-for r in d['reviews']:
-    add(ID_origem='htc:' + str(r['id']), Marca=CA, Fonte='Home Tester Club', Mercado='BR', Tipo_fonte='Plataforma de teste',
-        Produto=r['product']['name'], Nota=r['starRating'], Data=r['dateCreated'][:10], Compra_verificada='n/d',
-        Incentivo='Sim (testador)' if r['isHomeTested'] else 'Não informado',
-        Texto_bruto=' '.join(x for x in [r.get('reviewTitle'), r.get('reviewText')] if x),
-        Link='https://www.hometesterclub.com/br/pt/reviews/' + r['product']['urlName'], Produto_elegivel=True,
-        Obs_coleta='' if r['isHomeTested'] else 'plataforma de teste, mas review não marcada como testador',
-        Coletado_em=d['coletado_em'])
+# 5) Home Tester Club (páginas de SuperCoffee e Ultracoffee)
+f = ultimo('hometesterclub/reviews_multi_*.json')
+for pg in json.load(open(f))['paginas']:
+    nome = pg['meta']['name']
+    m = UC if 'ultracoffee' in nome.lower() else CA
+    for r in pg['reviews']:
+        add(ID_origem='htc:' + str(r['id']), Marca=m, Fonte='Home Tester Club', Mercado='BR', Tipo_fonte='Plataforma de teste',
+            Produto=r['product']['name'], Nota=r['starRating'], Data=r['dateCreated'][:10], Compra_verificada='n/d',
+            Incentivo='Sim (testador)' if r['isHomeTested'] else 'Não informado',
+            Texto_bruto=' '.join(x for x in [r.get('reviewTitle'), r.get('reviewText')] if x),
+            Link='https://www.hometesterclub.com/br/pt/reviews/' + r['product']['urlName'], Produto_elegivel=True,
+            Obs_coleta='' if r['isHomeTested'] else 'plataforma de teste, mas review não marcada como testador',
+            Coletado_em=pg['coletado_em'])
+
+# 6) Site Essential Nutrition (Brainstorm Coffee, JSON-LD)
+f = ultimo('essential_site/reviews_*.json')
+for i, r in enumerate(json.load(open(f))):
+    add(ID_origem='ess:' + hashlib.sha1(((r['data'] or '') + (r['texto'] or '')).encode()).hexdigest()[:16], Marca=BS,
+        Fonte='Site Essential Nutrition', Mercado='BR', Tipo_fonte='Site da marca', Produto=r['produto'],
+        Nota=r['nota'] or None, Data=(r['data'] or '')[:10], Compra_verificada='n/d', Incentivo='Não informado',
+        Texto_bruto=r['texto'] or '', Link=r['url'], Produto_elegivel=True, Coletado_em=r['coletado_em'],
+        Obs_coleta='' if r['nota'] else 'sem nota individual', autor=r['autor'], data_hora=r['data'])
+
+# 7) Mercafé – loja oficial do Grupo 3corações (Ultracoffee, Yourviews)
+f = ultimo('mercafe_ultracoffee/reviews_*.json')
+for r in json.load(open(f)):
+    dt = '-'.join(reversed((r['data'] or '').split('/')))
+    add(ID_origem='merc:' + hashlib.sha1((str(r['productId']) + (r['autor'] or '') + (r['data'] or '') + (r['texto'] or '')).encode()).hexdigest()[:16],
+        Marca=UC, Fonte='Mercafé (loja 3corações)', Mercado='BR', Tipo_fonte='Site da marca', Produto=r['produto'],
+        Nota=r['nota'], Data=dt, Compra_verificada='Sim' if r['verificada'] else 'Não', Incentivo='Não informado',
+        Texto_bruto=' '.join(x for x in [r.get('titulo') if r.get('titulo') not in ('Produto Ótimo', 'Produto Bom', 'Produto Regular', 'Produto Ruim', 'Produto Péssimo') else '', r.get('texto')] if x),
+        Link=r['url'], Produto_elegivel=True, Coletado_em=r['coletado_em'], autor=r['autor'], data_hora=dt)
+
+# 8) Varejo VTEX (Konfidency e Yourviews): Drogaria SP, Pacheco, Americanas, Pague Menos, Drogal
+f = ultimo('varejo/reviews_*.json')
+ja = {l['ID_origem'] for l in linhas}  # Drogaria SP já veio na coleta da v2: não repetir
+for r in (json.load(open(f)) if f else []):
+    m = MARCA_VAREJO[r['_marca']]
+    if ('konf:' + r['_id'] if '_id' in r else 'yv:' + str(r.get('ReviewId'))) in ja: continue
+    if '_id' in r:  # Konfidency
+        add(ID_origem='konf:' + r['_id'], Marca=m, Fonte=LOJA[r['_loja']], Mercado='BR', Tipo_fonte='Marketplace independente',
+            Produto=r['_produto'], Nota=r.get('rating'), Data=(r.get('created') or '')[:10],
+            Compra_verificada='Sim' if r.get('verified') else 'Não', Incentivo='Não informado',
+            Texto_bruto=r.get('text') or '', Link=r['_url'], Produto_elegivel=True, Coletado_em=r['_coletado_em'],
+            autor=r.get('name'), data_hora=r.get('created'))
+    else:  # Yourviews
+        add(ID_origem='yv:' + str(r['ReviewId']), Marca=m, Fonte=LOJA[r['_loja']], Mercado='BR', Tipo_fonte='Marketplace independente',
+            Produto=r['_produto'], Nota=r.get('Rating'), Data=(r.get('Date') or '')[:10], Compra_verificada='n/d',
+            Incentivo='Não informado', Texto_bruto=r.get('Review') or '', Link=r['_url'], Produto_elegivel=True,
+            Coletado_em=r['_coletado_em'], autor=(r.get('User') or {}).get('Name'), data_hora=r.get('Date'))
 
 # Deduplicação: (a) ID_origem; (b) texto normalizado + data + nota (entre fontes)
 dup = collections.Counter()
@@ -118,10 +163,15 @@ for l in linhas:
             l['Duplicata_de'] = vistos_aut[k2]; dup['mesmo autor+texto'] += 1; continue
         vistos_aut[k2] = l['ID_origem']
 
-# IDs pseudônimos estáveis: ordem por marca, fonte, data, id de origem
+# IDs pseudônimos estáveis: quem já existia na v2 mantém o ID (a codificação depende dele); novos recebem o próximo número
+ids_ant = json.load(open(OUT / 'ids_v2.json')) if (OUT / 'ids_v2.json').exists() else {}
 cont = collections.Counter()
-for l in sorted(linhas, key=lambda x: (x['Marca'] != CA, x['Fonte'], x['Data'], x['ID_origem'])):
-    p = 'CA' if l['Marca'] == CA else 'DE'
+for idv in ids_ant.values():
+    p, n = idv.split('-'); cont[p] = max(cont[p], int(n))
+for l in sorted(linhas, key=lambda x: (list(PREF).index(x['Marca']), x['Fonte'], x['Data'], x['ID_origem'])):
+    if l['ID_origem'] in ids_ant:
+        l['ID'] = ids_ant[l['ID_origem']]; continue
+    p = PREF[l['Marca']]
     cont[p] += 1
     l['ID'] = f'{p}-{cont[p]:05d}'
 linhas.sort(key=lambda x: x['ID'])

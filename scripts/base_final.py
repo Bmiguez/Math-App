@@ -76,16 +76,20 @@ wb = openpyxl.load_workbook(RAIZ / 'entrada' / 'reviews_cafe_funcional_v1.xlsx')
 ws = wb['Base_reviews']
 rows = list(ws.iter_rows(values_only=True)); h = list(rows[0])
 v1codes = h[13:37]
-prox = {'CA': max(int(r['ID'][3:]) for r in final if r['ID'].startswith('CA')),
-        'DE': max(int(r['ID'][3:]) for r in final if r['ID'].startswith('DE'))}
+ids_ant = json.load(open(T / 'ids_v2.json')) if (T / 'ids_v2.json').exists() else {}
+prox = {p: max([int(r['ID'][3:]) for r in final if r['ID'].startswith(p)] + [int(v[3:]) for v in ids_ant.values() if v.startswith(p)])
+        for p in ('CA', 'DE')}
 for row in rows[1:]:
     d = dict(zip(h, row))
     if d['Fonte'] not in ('Magazine Luiza', 'Amazon (via Buscapé)', 'Amazon (via Zoom)', 'Mercado Livre'):
         continue
     p = 'CA' if d['Marca'].startswith('Caffeine') else 'DE'
-    prox[p] += 1
+    if 'v1:' + d['ID'] in ids_ant:
+        novo_id = ids_ant['v1:' + d['ID']]
+    else:
+        prox[p] += 1; novo_id = f'{p}-{prox[p]:05d}'
     codes = [c for c in v1codes if str(d[c]) == '1']
-    final.append({'ID': f'{p}-{prox[p]:05d}', 'ID_origem': 'v1:' + d['ID'], 'Marca': d['Marca'], 'Fonte': d['Fonte'],
+    final.append({'ID': novo_id, 'ID_origem': 'v1:' + d['ID'], 'Marca': d['Marca'], 'Fonte': d['Fonte'],
                   'Mercado': d['Mercado'], 'Tipo_fonte': 'Marketplace independente', 'Produto': d['Produto'],
                   'Nota': d['Nota (1-5)'] or None, 'Data': str(d['Data aprox.'] or ''), 'Compra_verificada': 'n/d',
                   'Incentivo': d['Incentivo'], 'Link': d['Link'], 'Coletado_em': '20261103 (v1)',

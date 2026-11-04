@@ -1,4 +1,4 @@
-"""Gera saida/reviews_cafe_funcional_v2.xlsx a partir de saida/trabalho/base_final.json.
+"""Gera saida/reviews_cafe_funcional_v3.xlsx a partir de saida/trabalho/base_final.json.
 Resultados e comparações são fórmulas (COUNTIFS) sobre a aba Base_reviews.
 Uso: python scripts/monta_planilha.py <arquivo_saida.xlsx>
 """
@@ -10,8 +10,10 @@ from openpyxl.utils import get_column_letter as L
 RAIZ = pathlib.Path(__file__).resolve().parent.parent
 T = RAIZ / 'saida' / 'trabalho'
 B = RAIZ / 'saida' / 'bruto'
-OUT = sys.argv[1] if len(sys.argv) > 1 else str(RAIZ / 'saida' / 'reviews_cafe_funcional_v2.xlsx')
+OUT = sys.argv[1] if len(sys.argv) > 1 else str(RAIZ / 'saida' / 'reviews_cafe_funcional_v3.xlsx')
 CA, DE = 'Caffeine Army (SuperCoffee)', 'Desincoffee (Super Nutrition/Desinchá)'
+BS, UC = 'Brainstorm Coffee (Essential Nutrition)', 'Ultracoffee (3corações / Plant Power)'
+VC, MC = 'V-Coffee Energy Boost (Vitafor)', 'Mega Coffee (Allure)'
 F = json.load(open(T / 'base_final.json'))
 C = json.load(open(T / 'codigos.json'))
 MOT, BAR, NEU = C['MOT'], C['BAR'], C['NEU']
@@ -112,6 +114,14 @@ GR = [
     ('DE – site da marca', [('Marca', DE), ('Site da marca (1/0)', 1)]),
     ('DE – site, sem reviews com foto', [('Marca', DE), ('Site da marca (1/0)', 1), ('Incentivo', 'Não informado')]),
     ('DE – fora do site da marca', [('Marca', DE), ('Site da marca (1/0)', 0)]),
+    ('BS – total', [('Marca', BS)]),
+    ('BS – site da marca', [('Marca', BS), ('Site da marca (1/0)', 1)]),
+    ('BS – fora do site da marca', [('Marca', BS), ('Site da marca (1/0)', 0)]),
+    ('UC – total', [('Marca', UC)]),
+    ('UC – site da marca', [('Marca', UC), ('Site da marca (1/0)', 1)]),
+    ('UC – fora do site da marca', [('Marca', UC), ('Site da marca (1/0)', 0)]),
+    ('VC – total', [('Marca', VC)]),
+    ('MC – total', [('Marca', MC)]),
 ]
 
 
@@ -124,7 +134,7 @@ def crit(lst):
 
 wr['A1'] = 'Quanto cada tema aparece nas avaliações – v2'; wr['A1'].font = TIT
 wr['A2'] = ('% = avaliações que citam o tema ÷ avaliações válidas do grupo (Incluir = 1). Multirresposta: não soma 100%. '
-            'Tudo calculado por fórmula sobre Base_reviews. CA = Caffeine Army; DE = Desincoffee.')
+            'Tudo calculado por fórmula sobre Base_reviews. CA = Caffeine Army (SuperCoffee); DE = Desincoffee; BS = Brainstorm Coffee; UC = Ultracoffee; VC = V-Coffee; MC = Mega Coffee.')
 hdr = ['Código', 'Tema', 'Tipo']
 for g, _ in GR:
     hdr += [f'{g} (n)', f'{g} (%)']
@@ -154,6 +164,7 @@ notas = [
     'O Desincoffee só tem reviews com texto acessíveis no site da própria marca (Loox). Fora do site, n = 4 (herdadas da v1, Mercado Livre): não dá para responder com dados se "o Desincoffee só parece melhor por vir do próprio site".',
     'No Loox, reviews com foto podem ter ganhado cupom; a coluna "sem reviews com foto" serve de controle.',
     'Grupos com n < 30 têm margem de erro acima de ±18 p.p.; trate como indicação, não como medida.',
+    'BS e UC: n de 25 e 27. VC e MC: sem nenhuma review válida nas fontes acessíveis (colunas zeradas de propósito, para registrar a lacuna).',
 ]
 for j, t in enumerate(notas):
     wr.cell(row=me + 3 + j, column=1, value=f'{j + 1}. {t}')
@@ -167,7 +178,7 @@ wc['A1'] = 'O que mudou em relação à v1 (diferenças acima de 10 p.p. destaca
 wc['A2'] = 'v1 = valores da planilha v1 (n = 66 CA; 192 DE). v2 = fórmulas ligadas à aba Resultados (total de cada marca).'
 cab(wc, 4, ['Código', 'Tema', 'CA v1 %', 'CA v2 %', 'CA dif. (p.p.)', 'CA > 10 p.p.?', 'DE v1 %', 'DE v2 %', 'DE dif. (p.p.)', 'DE > 10 p.p.?', 'Explicação'])
 EXPL_CA = ('Mudança de fonte, não de opinião: a v1 da CA era Thingtesting (EUA) + Magalu; a v2 é 95% site da marca, '
-           'com reviews de "ranking de sabores" publicadas em massa em nov–dez/2025. Fora do site (n = 73) os % ficam próximos da v1.')
+           'com reviews de "ranking de sabores" publicadas em massa em nov–dez/2025. Fora do site (n = 86 na v3) os % ficam próximos da v1.')
 EXPL = {'ENE': EXPL_CA, 'SAB': EXPL_CA, 'HAB': EXPL_CA, 'TRE': EXPL_CA, 'SEF': EXPL_CA, 'SAU': EXPL_CA, 'SUB': EXPL_CA,
         'PRA': EXPL_CA + ' PRA também sobe porque as páginas dos sachês To Go puxam o tema "levar na bolsa/viagem".',
         'TEX': EXPL_CA, 'nPRE': EXPL_CA + ' Preço quase não aparece no site da marca.'}
@@ -221,6 +232,18 @@ cab(wv, 1, ['Fonte', 'Marca', 'Volume anunciado no site', 'Coletado (linhas brut
 D = '04/11/2026'
 loox_unicas = n('Site Desinchá (Loox)', lambda r: not r['Obs'].startswith('duplicata'))
 loox_cafe = n('Site Desinchá (Loox)', lambda r: not r['Obs'].startswith('duplicata') and 'não é supercafé' not in r['Obs'])
+vp = json.load(open(sorted(glob.glob(str(B / 'varejo' / 'produtos_*.json')))[-1]))
+LOJA = {'www.drogariasaopaulo.com.br': 'Drogaria São Paulo', 'www.drogariaspacheco.com.br': 'Drogarias Pacheco',
+        'www.americanas.com.br': 'Americanas', 'www.paguemenos.com.br': 'Pague Menos', 'www.drogal.com.br': 'Drogal'}
+LINHAS_VAREJO = []
+for dom, nome in LOJA.items():
+    ps = [x for x in vp if x['loja'] == dom]
+    marcas_loja = sorted({x['marca'] for x in ps})
+    anun = sum(((x.get('agregado') or {}).get('reviewCount') or 0) if x['widget'] == 'konfidency' else max([t or 0 for t in (x.get('total_por_id') or {}).values()] or [0]) for x in ps)
+    col = n(nome); val = v(nome)
+    LINHAS_VAREJO.append([f'{nome} ({ps[0]["widget"].capitalize() if ps else "—"})', ' + '.join(marcas_loja) or '—', anun, col, col, val, (col / anun) if anun else '—', D,
+                          f'Busca no catálogo VTEX ({len(ps)} produtos das 6 marcas) + widget de reviews público',
+                          'Drogaria SP coletada também na v2 (mesmas reviews, não duplicadas). ' + ('Sem reviews com texto para V-Coffee e Mega Coffee.' if ps else '')])
 COB = [
     ['Site Desinchá (Loox) – inclui Super Nutrition', 'DE', anun_loox, n('Site Desinchá (Loox)'), loox_cafe, v('Site Desinchá (Loox)'), loox_cafe / anun_loox, D,
      'HTML das 59 páginas de produto de supercafé (40 reviews mais recentes por página)',
@@ -230,17 +253,22 @@ COB = [
      v('Site Caffeine Army (Judge.me)'), n('Site Caffeine Army (Judge.me)', lambda r: not r['Obs'].startswith('duplicata')) / anun_jdgm, D,
      '127 páginas de produto + paginação pública api.judge.me/reviews/reviews_for_widget (não bloqueada no robots.txt)',
      f'Cobertura praticamente total do site. Das {n("Site Caffeine Army (Judge.me)", sc)} reviews de SuperCoffee, {v("Site Caffeine Army (Judge.me)")} válidas; as demais são Koala, Morning Shot, Whey e Creatina (Incluir = 0). 91% das válidas foram publicadas em nov–dez/2025.'],
-    ['Drogaria São Paulo (Konfidency)', 'CA', 11, n('Drogaria São Paulo'), n('Drogaria São Paulo'), v('Drogaria São Paulo'), 1.0, D,
-     'API pública do widget Konfidency por produto (45 produtos das duas marcas)', '9 das 11 sem texto. Nenhuma review de Desincoffee na loja.'],
+    *LINHAS_VAREJO,
     ['Thingtesting (EUA)', 'CA', 32, n('Thingtesting'), n('Thingtesting'), v('Thingtesting'), 1.0, D, 'HTML (2 páginas)', 'Recoletado com texto integral (a v1 tinha só paráfrase).'],
-    ['Home Tester Club', 'CA', 126, n('Home Tester Club'), n('Home Tester Club'), v('Home Tester Club'), n('Home Tester Club') / 126, D,
-     'HTML da página (10 reviews renderizadas)', 'API de paginação exige autenticação (401): não contornado. Volume subiu de 76 (03/11) para 126. Nenhuma das 10 marcada como testador.'],
-    ['Mercado Livre', 'CA + DE', '8.600+ (CA, 03/11); 267+ (DE)', 0, 0, v('Mercado Livre'), 0, D, '—',
+    ['Home Tester Club', 'CA + UC', '126 (CA) / 69 (UC)', n('Home Tester Club'), n('Home Tester Club'), v('Home Tester Club'), n('Home Tester Club') / 195, D,
+     'HTML das páginas (10 reviews renderizadas por produto)', 'API de paginação exige autenticação (401): não contornado. Página do Desincoffee desativada no site (sem produto). Nenhuma das 20 marcada como testador.'],
+    ['Site Essential Nutrition', 'BS', 22, n('Site Essential Nutrition'), n('Site Essential Nutrition'), v('Site Essential Nutrition'), 1.0, D,
+     'JSON-LD (schema.org/Review) das 2 páginas de Brainstorm Coffee', 'Cobertura total do site.'],
+    ['Mercafé (loja do Grupo 3corações)', 'UC', 14, n('Mercafé (loja 3corações)'), n('Mercafé (loja 3corações)'), v('Mercafé (loja 3corações)'), 1.0, D,
+     'HTML das 12 páginas de Ultracoffee (widget Yourviews renderizado)', 'Cobertura total do site.'],
+    ['Site Vitafor', 'VC', 0, 0, 0, 0, '—', D, 'API pública do app VTEX Reviews & Ratings', 'O app está instalado, mas nenhum produto da loja tem review publicada.'],
+    ['Site Allure Pharma', 'MC', 'não confirmado', 0, 0, 0, 0, D, '—', 'HTTP 403 (bloqueio anti-robô). Não coletado.'],
+    ['Mercado Livre', 'todas', '8.600+ (CA, 03/11); 267+ (DE); demais não contadas', 0, 0, v('Mercado Livre'), 0, D, '—',
      'robots.txt do Mercado Livre bloqueia ClaudeBot/Claude-User em todo o site, e a API exige token (403). Não coletado. 4 linhas de DE herdadas da v1.'],
-    ['Magazine Luiza', 'CA', 'não confirmado', 0, 0, v('Magazine Luiza'), 0, D, '—', 'HTTP 403 (bloqueio anti-robô) até no robots.txt. 26 linhas herdadas da v1 (só paráfrase).'],
-    ['Amazon Brasil', 'CA', '~907 (Buscapé)', 0, 0, 0, 0, D, '—', 'robots.txt bloqueia agentes Claude. Não coletado.'],
+    ['Magazine Luiza', 'todas', 'não confirmado', 0, 0, v('Magazine Luiza'), 0, D, '—', 'HTTP 403 (bloqueio anti-robô) até no robots.txt. 26 linhas herdadas da v1 (só paráfrase).'],
+    ['Amazon Brasil', 'todas', '~907 (CA, via Buscapé)', 0, 0, 0, 0, D, '—', 'robots.txt bloqueia agentes Claude. Não coletado.'],
     ['Buscapé / Zoom (réplica da Amazon)', 'CA', '~907', 0, 0, v('Amazon (via Buscapé)') + v('Amazon (via Zoom)'), 0, D, '—', 'robots.txt bloqueia agentes Claude. 3 linhas herdadas da v1.'],
-    ['Drogasil / Droga Raia / Panvel', 'CA + DE', 'não confirmado', 0, 0, 0, 0, D, '—', 'HTTP 403 (bloqueio anti-robô). Não coletado.'],
+    ['Drogasil / Droga Raia / Panvel / Beleza na Web', 'todas', 'não confirmado', 0, 0, 0, 0, D, '—', 'HTTP 403 (bloqueio anti-robô). Não coletado.'],
     ['Reclame Aqui', 'CA + DE', '2.150 (CA) / 248 (perfil SuperCoffee) / 1.585 (Desinchá)', 0, 0, 0, 0, D, '—',
      'HTTP 403 no site e na API de busca. Contagens da aba Reclame_Aqui são da v1 (03/11), não atualizadas.'],
 ]
@@ -254,6 +282,7 @@ wv.cell(row=k, column=1, value='Deduplicação').font = B1
 wv.cell(row=k + 1, column=1, value=f"Por ID de origem: {dd.get('ID_origem', 0)}. Por texto + data/hora + nota + autor (cópias do Loox entre produtos): {dd.get('texto+data+nota', 0)}. "
                                    f"Mesmo autor + mesmo texto em outro produto: {dd.get('mesmo autor+texto', 0)}. Mais {sum(1 for r in F if r['Obs'].startswith('duplicata de')) - sum(dd.values())} quase-duplicatas (texto quase idêntico) marcadas na codificação manual.")
 wv.cell(row=k + 3, column=1, value='Amostra mínima de 400 por marca').font = B1
+wv.cell(row=k + 5, column=1, value=f"BS: {sum(1 for r in F if r['Incluir'] and r['Marca'] == BS)}, UC: {sum(1 for r in F if r['Incluir'] and r['Marca'] == UC)}, VC: 0, MC: 0 válidas. Mínimo NÃO atingido nas 4 marcas novas: as fontes acessíveis não têm esse volume; o grosso das reviews delas está em Mercado Livre e Amazon (bloqueados).")
 wv.cell(row=k + 4, column=1, value=f"CA: {sum(1 for r in F if r['Incluir'] and r['Marca'] == CA)} válidas (atingido). DE: {sum(1 for r in F if r['Incluir'] and r['Marca'] == DE)} válidas (atingido, mas não é amostra aleatória estratificada por nota: o Loox só expõe as 40 mais recentes por página sem violar o robots.txt).")
 for col, w in {'A': 32, 'B': 9, 'C': 18, 'D': 12, 'E': 14, 'F': 10, 'G': 12, 'H': 11, 'I': 40, 'J': 90}.items():
     wv.column_dimensions[col].width = w
@@ -261,7 +290,7 @@ for col, w in {'A': 32, 'B': 9, 'C': 18, 'D': 12, 'E': 14, 'F': 10, 'G': 12, 'H'
 # ---------------- Reclame_Aqui (v1, não atualizado) ----------------
 wa = wb.create_sheet('Reclame_Aqui')
 wa['A1'] = 'Reclame Aqui – contagens oficiais (base completa da empresa, não amostra)'; wa['A1'].font = TIT
-wa['A2'] = 'NÃO ATUALIZADO NA v2: em 04/11/2026 o site e a API de busca do Reclame Aqui responderam HTTP 403. Valores de 03/11/2026 (v1).'
+wa['A2'] = 'NÃO ATUALIZADO (v2 e v3): em 04/11/2026 o site e a API de busca do Reclame Aqui responderam HTTP 403. Valores de 03/11/2026 (v1).'
 cab(wa, 4, ['Caffeine Army – tipo de problema', 'Reclamações (n)', '% do total de reclamações'])
 ra = [('Total de reclamações ativas', 2150), ('Produto não recebido', 618), ('Atraso na entrega', 507), ('Propaganda enganosa', 113),
       ('Não consigo cancelar', 104), ('Qualidade do produto', 93), ('Outro problema', 70)]
@@ -316,32 +345,36 @@ for i, (c, d) in enumerate(VAL['por_codigo'].items(), 6):
 # ---------------- LEIA-ME ----------------
 wm = wb.create_sheet('LEIA-ME', 0)
 nCA = sum(1 for r in F if r['Incluir'] and r['Marca'] == CA); nDE = sum(1 for r in F if r['Incluir'] and r['Marca'] == DE)
+nBS = sum(1 for r in F if r['Incluir'] and r['Marca'] == BS); nUC = sum(1 for r in F if r['Incluir'] and r['Marca'] == UC)
 txt = [
-    ('Base de reviews codificada: Caffeine Army x Desincoffee – v2', TIT),
+    ('Base de reviews codificada: cafés funcionais (6 marcas) – v3', TIT),
     ('Gerado em 04/11/2026. Coleta automatizada de páginas públicas, respeitando robots.txt e limite de 1 requisição a cada 1,2–1,5 s.', None),
     ('', None),
     ('O que tem aqui', B1),
     ('Resultados: % de avaliações por tema, por marca e por segmento (mercado, site da marca, incentivo, pico de campanha). Fórmulas sobre Base_reviews.', None),
     ('Comparacao_v1: diferença de cada tema contra a v1, com destaque acima de 10 p.p. e explicação.', None),
-    (f'Base_reviews: {len(F)} linhas (todas as coletadas, inclusive duplicatas e outros produtos, com Incluir = 0 e motivo em Obs). Válidas: CA {nCA}, DE {nDE}.', None),
+    (f'Base_reviews: {len(F)} linhas (todas as coletadas, inclusive duplicatas e outros produtos, com Incluir = 0 e motivo em Obs). Válidas: CA {nCA}, DE {nDE}, BS {nBS}, UC {nUC}, VC 0, MC 0.', None),
+    ('Marcas: CA = SuperCoffee 3.0 (Caffeine Army); DE = Desincoffee (Desinchá); BS = Brainstorm Coffee (Essential Nutrition); UC = Ultracoffee (Grupo 3corações / Plant Power); VC = V-Coffee Energy Boost (Vitafor); MC = Mega Coffee (Allure).', None),
     ('Textos: texto original das reviews de produtos elegíveis, ligado por ID (nomes e um endereço escritos pelos autores foram removidos).', None),
     ('Livro_de_codigos: os 24 códigos da v1 sem mudança de sentido + 4 novos (nDIS, nATE, nING, ASS) e as regras de decisão.', None),
     ('Cobertura: volume anunciado x coletado x válido por fonte, método e bloqueios.', None),
     ('Reclame_Aqui: contagens da v1 (o site bloqueou em 04/11).', None),
     ('Formulario_CA: respostas estruturadas (objetivo, idade, recomendaria) de quem avaliou no site da Caffeine Army.', None),
-    ('Validacao: concordância e kappa da recodificação cega de 238 reviews.', None),
+    ('Validacao: concordância e kappa da recodificação cega de 238 reviews (CA e DE, rodada v2).', None),
+    ('O que mudou da v2 para a v3: entraram Brainstorm, Ultracoffee, V-Coffee e Mega Coffee, mais 4 varejistas (Pacheco, Americanas, Pague Menos, Drogal) e o Home Tester do Ultracoffee. Nenhuma linha ou código da v2 foi alterado; IDs preservados.', None),
     ('', None),
     ('Privacidade', B1),
     ('Nenhum nome ou foto de autor na planilha; ID pseudônimo (CA-00001 / DE-00001). Os brutos com nome ficam só em saida/bruto/ (local, fora do Git).', None),
     ('A coluna Resumo é gerada a partir dos códigos atribuídos (lista de temas), não é paráfrase escrita à mão. Nas linhas herdadas da v1, é a paráfrase da v1.', None),
     ('', None),
     ('Limitações (leia antes de citar os números)', B1),
-    ('1. As duas marcas agora são medidas quase só pelo próprio site. CA: 95% das válidas vêm do site da marca; DE: 99%. Marketplaces (Mercado Livre, Magalu, Amazon) bloquearam e não entraram, salvo 33 linhas herdadas da v1.', None),
-    ('2. Site da Caffeine Army: 91% das reviews válidas foram publicadas em nov–dez/2025, em formato de "ranking de sabores". Isso indica campanha de avaliação solicitada; o resultado puxa SAB para cima e ENE, preço e barreiras para baixo. Use a coluna "sem o pico" e a coluna "fora do site" como controle.', None),
-    ('3. Desincoffee: só as 40 reviews mais recentes de cada página (jul–out/2026, majoritariamente). Não é amostra aleatória, e não há controle "fora do site" com n útil (n = 4).', None),
-    ('4. Notas: 94% das válidas da CA e 83% das do DE são 5 estrelas. Barreiras ficam sub-representadas nas duas; no site da CA fora do pico de nov–dez/2025, 28% citam alguma barreira (contra 4% no total).', None),
-    ('5. Codificação feita por um codificador, com recodificação cega de 10% (concordância ≥ 95,7% em todos os códigos; PRA é o mais instável, kappa 0,89).', None),
-    ('6. Margem de erro (95%): ±2,6 p.p. no total CA, ±4,8 p.p. no total DE, ±11,5 p.p. na CA fora do site, ±17 p.p. na CA EUA.', None),
+    ('1. V-Coffee e Mega Coffee: ZERO reviews nas fontes acessíveis (site Vitafor sem reviews; site Allure bloqueado; farmácias sem avaliações). Brainstorm (n = 25) e Ultracoffee (n = 27) têm n pequeno: margem de erro de ±20 p.p.; use só a ordem dos temas.', None),
+    ('2. Marketplaces (Mercado Livre, Amazon, Magalu) e Reclame Aqui bloquearam agentes automáticos e não entraram, salvo 33 linhas herdadas da v1. CA e DE são medidas quase só pelo próprio site (94% e 98%).', None),
+    ('3. Site da Caffeine Army: 91% das reviews válidas foram publicadas em nov–dez/2025, em formato de "ranking de sabores". Isso indica campanha de avaliação solicitada; o resultado puxa SAB para cima e ENE, preço e barreiras para baixo. Use a coluna "sem o pico" e a coluna "fora do site" como controle.', None),
+    ('4. Desincoffee: só as 40 reviews mais recentes de cada página (jul–out/2026, majoritariamente). Não é amostra aleatória, e não há controle "fora do site" com n útil (n = 4).', None),
+    ('5. Notas: 94% das válidas da CA e 83% das do DE são 5 estrelas. Barreiras ficam sub-representadas nas duas; no site da CA fora do pico de nov–dez/2025, 28% citam alguma barreira (contra 4% no total).', None),
+    ('6. Codificação feita por um codificador, com recodificação cega de 10% de CA e DE (concordância ≥ 95,7% em todos os códigos; PRA é o mais instável, kappa 0,89). As 68 reviews novas da v3 não passaram por recodificação cega.', None),
+    ('7. Margem de erro (95%): ±2,6 p.p. no total CA, ±4,8 p.p. no total DE, ±10,6 p.p. na CA fora do site, ±17 p.p. na CA EUA, ±20 p.p. em BS e UC.', None),
 ]
 for i, (t, f) in enumerate(txt, 1):
     c = wm.cell(row=i, column=1, value=t)

@@ -8,6 +8,8 @@ from openpyxl import load_workbook
 RAIZ = pathlib.Path(__file__).resolve().parent.parent
 T = RAIZ / 'saida' / 'trabalho'
 CA, DE = 'Caffeine Army (SuperCoffee)', 'Desincoffee (Super Nutrition/Desinchá)'
+BS, UC = 'Brainstorm Coffee (Essential Nutrition)', 'Ultracoffee (3corações / Plant Power)'
+VC, MC = 'V-Coffee Energy Boost (Vitafor)', 'Mega Coffee (Allure)'
 F = json.load(open(T / 'base_final.json'))
 C = json.load(open(T / 'codigos.json'))
 CODES = C['MOT'] + C['BAR'] + C['NEU']
@@ -22,7 +24,10 @@ GR = [v[v.Marca == CA], v[(v.Marca == CA) & (v.Mercado == 'BR')], v[(v.Marca == 
       v[(v.Marca == CA) & (v.Site_marca == 1)], v[(v.Marca == CA) & (v.Site_marca == 1) & (v.Pico == 0)],
       v[(v.Marca == CA) & (v.Site_marca == 0)], v[(v.Marca == CA) & (v.Site_marca == 0) & (v.Incentivada == 0)],
       v[v.Marca == DE], v[(v.Marca == DE) & (v.Site_marca == 1)], v[(v.Marca == DE) & (v.Site_marca == 1) & (v.Incentivo == 'Não informado')],
-      v[(v.Marca == DE) & (v.Site_marca == 0)]]
+      v[(v.Marca == DE) & (v.Site_marca == 0)],
+      v[v.Marca == BS], v[(v.Marca == BS) & (v.Site_marca == 1)], v[(v.Marca == BS) & (v.Site_marca == 0)],
+      v[v.Marca == UC], v[(v.Marca == UC) & (v.Site_marca == 1)], v[(v.Marca == UC) & (v.Site_marca == 0)],
+      v[v.Marca == VC], v[v.Marca == MC]]
 
 wb = load_workbook(sys.argv[1], data_only=True)
 erros = []
@@ -41,7 +46,7 @@ for k, g in enumerate(GR):
     if ws.cell(row=5, column=nc).value != len(g):
         div.append(('BASE', k, ws.cell(row=5, column=nc).value, len(g)))
     for i, c in enumerate(linhas, 6):
-        n = int(g[c].sum()); p = n / len(g) if len(g) else 0
+        n = int(g[c].sum()) if len(g) else 0; p = n / len(g) if len(g) else 0
         if ws.cell(row=i, column=nc).value != n or abs((ws.cell(row=i, column=pc).value or 0) - p) > 1e-9:
             div.append((c, k, ws.cell(row=i, column=nc).value, n))
 # Base: Algum motivo / Alguma barreira por linha
