@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisão de tendências</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1d1b18;--mut:#6b655c;--line:#e3ded4;--acc:#5b3a1e;--ok:#2f6b3a;--warn:#9a5b00;--bad:#a12a2a;--chip:#f3efe7}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171513;--fg:#ece7df;--mut:#a39b8f;--line:#35312b;--acc:#d9a873;--ok:#7cc48a;--warn:#e0a650;--bad:#ec8080;--chip:#24211d}}
+:root[data-theme="dark"]{--bg:#171513;--fg:#ece7df;--mut:#a39b8f;--line:#35312b;--acc:#d9a873;--ok:#7cc48a;--warn:#e0a650;--bad:#ec8080;--chip:#24211d}
+body{background:var(--bg);color:var(--fg);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:0}
+main{max-width:980px;margin:0 auto;padding:28px 16px 60px}
+h1{font-size:1.6rem;margin:0 0 4px}h2{font-size:1.2rem;margin:34px 0 8px;color:var(--acc)}h3{font-size:1rem;margin:20px 0 6px}
+.sub{color:var(--mut);margin:0 0 20px}
+.box{border:1px solid var(--line);border-left:4px solid var(--acc);padding:12px 16px;border-radius:6px;background:var(--chip)}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.9rem;margin:8px 0}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}th{color:var(--mut);font-weight:600}
+td.n{text-align:right;white-space:nowrap}.up{color:var(--ok);font-weight:600}.dn{color:var(--bad);font-weight:600}
+.tag{display:inline-block;padding:1px 7px;border-radius:10px;font-size:.8rem;background:var(--chip);border:1px solid var(--line)}
+.bad{color:var(--bad)}.warn{color:var(--warn)}
+ul{padding-left:20px}li{margin:3px 0}small{color:var(--mut)}
+</style>
+</head>
+<body><main>
+<h1>Revisão das tendências e do status dos players</h1>
+<p class="sub">UK, Alemanha, EUA e Canadá · 95 players da aba "Tendências por player" · verificação em 04/11/2026 · planilha: <b>Mapa_Concorrentes_SuperCoffee_v5.xlsx</b></p>
+
+<div class="box">
+<b>Resposta curta.</b> As conclusões por pilar se mantêm: cogumelo lidera no UK e no Canadá, proteína lidera na Alemanha, e nos EUA proteína e cogumelo disputam a liderança. A v4 tinha, porém, dois problemas que mudam números apresentáveis:
+<ol>
+<li><b>Matcha estava muito subcontado (4 → 33 de 95).</b> Pela regra da própria v4 (as flags valem para o portfólio da marca), 29 marcas lançaram linhas de matcha que não estavam marcadas. Quase sempre é extensão de linha, não o produto principal.</li>
+<li><b>A regra de portfólio não tinha sido aplicada a todos os players.</b> Apliquei a mesma regra aos 95, conferindo o catálogo oficial de cada um. Foram 101 células alteradas em 46 players. Lion's mane sobe de 43% para 67% no UK e de 28% para 44% no Canadá.</li>
+</ol>
+<b>Status:</b> 87 dos 95 estão ativos (79 sem ressalva e 8 com a linha mapeada alterada, esgotada ou com a marca renomeada). Há 3 inativos ou pausados, 4 incertos e 1 grupo não verificado.
+</div>
+
+<h2>1. Como a revisão foi feita</h2>
+<ul>
+<li><b>Site oficial de cada marca:</b> baixei a home e, nas lojas Shopify (a maioria), o catálogo completo (<code>/products.json</code>), com título, descrição e disponibilidade de cada produto.</li>
+<li><b>Flags conferidas contra o portfólio de bebidas</b> (café, latte, matcha, cacau, energético). Pós de whey, cápsulas e acessórios não contam. Mantive as regras da v4: colágeno não conta como proteína, e lion's mane só entra quando é citado.</li>
+<li><b>Status:</b> site no ar com a linha à venda conta como "Ativo". Quando o site estava bloqueado ou fora do ar, pesquisei varejo (Target, Costco, Holland &amp; Barrett, DocMorris, Shop Apotheke, comparador droptime.de) e notícias de 2025–26.</li>
+<li>Toda alteração ficou registrada na aba <b>"Revisão v5"</b> (antes, depois, motivo e fonte) e destacada em amarelo na aba de players. O status está nas colunas AP–AR.</li>
+<li>Abas originais (Concorrentes etc.): 0 diferenças em relação à v4. Fórmulas: 1.401, com 0 erros após o recálculo.</li>
+</ul>
+
+<h2>2. O que mudou nos números (v4 → v5)</h2>
+<div class="tw"><table>
+<tr><th>Atributo (% de marcas do país)</th><th>UK (30)</th><th>DE (23)</th><th>EUA (24)</th><th>CA (18)</th><th>Total (95)</th></tr>
+<tr><td>Cogumelos</td><td class="n">50% → <span class="up">70%</span></td><td class="n">30% = 30%</td><td class="n">38% = 38%</td><td class="n">50% = 50%</td><td class="n">40 → 46</td></tr>
+<tr><td>Lion's mane</td><td class="n">43% → <span class="up">67%</span></td><td class="n">26% = 26%</td><td class="n">33% = 33%</td><td class="n">28% → <span class="up">44%</span></td><td class="n">32 → 42</td></tr>
+<tr><td>Proteína</td><td class="n">3% = 3%</td><td class="n">43% = 43%</td><td class="n">46% → <span class="up">54%</span></td><td class="n">22% = 22%</td><td class="n">26 → 28</td></tr>
+<tr><td>Colágeno</td><td class="n">23% → 27%</td><td class="n">17% → 22%</td><td class="n">29% → 33%</td><td class="n">11% → 17%</td><td class="n">20 → 24</td></tr>
+<tr><td><b>Matcha</b></td><td class="n">7% → <span class="up">43%</span></td><td class="n">4% → <span class="up">35%</span></td><td class="n">4% → <span class="up">33%</span></td><td class="n">0% → <span class="up">22%</span></td><td class="n"><b>4 → 33</b></td></tr>
+<tr><td>Creatina</td><td class="n">1 → 3</td><td class="n">0 → 1</td><td class="n">3 → 4</td><td class="n">0 = 0</td><td class="n">4 → 8</td></tr>
+<tr><td>Adaptógenos</td><td class="n">4 → 10</td><td class="n">5 = 5</td><td class="n">4 = 4</td><td class="n">1 → 2</td><td class="n">14 → 21</td></tr>
+<tr><td>RTD</td><td class="n">3 → 4</td><td class="n">2 → 1</td><td class="n">6 = 6</td><td class="n">4 = 4</td><td class="n">15 = 15</td></tr>
+<tr><td>Pó instantâneo</td><td class="n">17 → 18</td><td class="n">20 → 21</td><td class="n">18 → 19</td><td class="n">9 → 10</td><td class="n">64 → 68 (72%)</td></tr>
+<tr><td>Cafeína mediana (mg)</td><td class="n">77,5</td><td class="n">80</td><td class="n">117,5 → <span class="dn">107,5</span></td><td class="n">72,5</td><td class="n">80</td></tr>
+<tr><td>Pilar principal e audiência</td><td colspan="5">Sem mudança: nenhum pilar precisou ser trocado.</td></tr>
+</table></div>
+<p><small>Antes de apresentar, defina o que o número mede. "% de marcas com X" mede a presença no portfólio, e cresce quando a marca lança extensões. "Pilar principal" mede o produto-herói (um por marca). Para dizer o que domina, use o pilar. Para mostrar para onde as marcas estão se expandindo, use a presença.</small></p>
+
+<h2>3. Revisão por país</h2>
+
+<h3>Reino Unido (30 players · 28 ativos)</h3>
+<ul>
+<li><b>Tendência confirmada e mais forte:</b> o cogumelo é o pilar de 14 de 30 marcas (47%), e lion's mane aparece em 20 (67%). Marcas de outros pilares também adicionaram lion's mane: TENZING (energético com lion's mane), GIANTS (colágeno com MCT e lion's mane), WOD Powders (Mushroom Coffee), Reformed (creatina e colágeno com "functional mushrooms") e Ancient + Brave (matcha com colágeno e lion's mane).</li>
+<li><b>Matcha virou extensão-padrão:</b> 13 marcas, entre elas DIRTEA, Spacegoods (matcha dust), Rheal, Naturya, GIANTS, WOD e Green Origins. O padrão é matcha + cogumelo ou colágeno.</li>
+<li><b>Creatina aparece:</b> DIRTEA (café e matcha com creatina), Reformed e Vivo Life (IGNITE).</li>
+<li><b>Correções:</b> a Solve Labs é polonesa (Lublin), não britânica, e o café encontrado leva lion's mane + rhodiola, não chaga. A Balance Coffee não vende mais o café com lion's mane, só café "clean" + elixir de lion's mane. O Sneak também vende energético em lata (RTD).</li>
+<li><span class="warn">Incertos:</span> Myprotein THE Coffee Boost (produto de 2020, não confirmado no site UK) e Solve Labs (site fora do ar, presença no UK não confirmada). <span class="warn">Com ressalva:</span> Vivo Life Magic Coffee (esgotado no site) e Balance (linha alterada). Unconform: loja própria esgotada, mas o RTD entrou na Holland &amp; Barrett em 2026.</li>
+</ul>
+
+<h3>Alemanha (23 players · 20 ativos)</h3>
+<ul>
+<li><b>Tendência confirmada:</b> o café proteico é o pilar de 10 de 23 marcas (43%) e concentra 82% da audiência. O comparador droptime.de lista 30 cafés proteicos ativos em 11/2026, o que reforça a leitura.</li>
+<li><b>Padrão novo: "Protein Matcha".</b> As marcas de proteína estão lançando matcha proteico: ESN, Neosupps, Rocka e MORE (que já estava marcada). Somando HOLY, koawach, Coffee 2.0 e Naturtreu, são 8 marcas com matcha (35%).</li>
+<li><b>Correções:</b> o ciao coffee hoje é café instantâneo à base de grãos (sem café), com versões com creatina, colágeno e vitaminas. Ele não tem RTD nem moído, e a v4 tinha esses formatos invertidos. O site da Sunday Natural mudou para sunday.de (o domínio antigo está à venda). Na Rocka, o café proteico aparece como "Protein Frappé".</li>
+<li><span class="bad">Inativos:</span> <b>Lumin'Essence (Daily Spark)</b>, cujo site está em modo senha ("Opening soon"), sem produto à venda, e <b>Clearly (Not Coffee)</b>, cujo site diz "We are rebuilding NOT COFFEE… back soon". Sugiro tirar os dois da contagem apresentada ou sinalizá-los.</li>
+<li>A linha "Outros cafés proteicos (grupo)" agrupa ~20 marcas e não foi verificada uma a uma.</li>
+</ul>
+
+<h3>EUA (24 players · 23 ativos)</h3>
+<ul>
+<li><b>Proteína ganha força:</b> está em 13 de 24 marcas (54%, eram 46%). A Laird lançou Protein Coffee e Protein Matcha (06/2026), e a VitaCup, o Slim Protein Coffee. No pilar, proteico (7) e cogumelo (6) continuam empatados tecnicamente, mas a audiência segue com o cogumelo (48%, puxada por RYZE e MUD\WTR).</li>
+<li><b>Matcha:</b> 8 marcas (RYZE, MUD\WTR, Four Sigmatic, Laird, Everyday Dose, Strong Coffee, Vital Proteins e Clevr).</li>
+<li><b>Correções:</b> o Super Coffee (Kitu) não tem mais moído/K-Cup nem creamer no site. A linha principal é RTD + pó Protein+ com 80 mg de cafeína, e os 200 mg eram da linha XXTRA. Por isso a mediana de cafeína dos EUA cai de 117,5 para 107,5 mg. A aba Concorrentes continua com 200 mg. O Jordan's Skinny Mixes relançou o café proteico como "Proffee Stix" (04/2026). A Guayakí opera como Yerba Madre, e a Javy hoje se escreve "Javvy".</li>
+<li><span class="warn">Incerto:</span> Le-Vel Thrive Café (o site exige login e não há confirmação recente).</li>
+</ul>
+
+<h3>Canadá (18 players · 16 ativos)</h3>
+<ul>
+<li><b>Tendência confirmada:</b> o cogumelo é o pilar de 8 de 18 marcas (44%), e lion's mane sobe para 8 marcas (44%) porque confirmei o ingrediente na Urban Calm, na Shyne e na Dodjivi, que antes estavam só em "cogumelos" pela regra 2. A audiência continua com proteína (71%).</li>
+<li><b>Matcha:</b> 4 marcas (Organika, Organic Traditions, Beck's Broth e PureShrooms).</li>
+<li><b>Correções:</b> Dodjivi é instantâneo (não moído) com 64 mg de cafeína. Botany tem 120 mg de cafeína e leva adaptógenos e vitaminas. O site da Coffee of the Apes migrou para coffeeapes.com. A Sproos tem dois creamers (ghee+MCT e MCT+colágeno), então a flag de colágeno vale.</li>
+<li><span class="bad">Provável inativo:</span> <b>The Good Shroom Co</b>. A empresa virou Mercanto Holdings (02/2025), mudou o foco para cannabis/vape e está com o site fora do ar. <span class="warn">Incerto:</span> <b>Cafegenix</b>, com site fora do ar e presença só em marketplaces ("sold out" no eBay).</li>
+</ul>
+
+<h2>4. Players que pedem decisão antes da apresentação</h2>
+<div class="tw"><table>
+<tr><th>Player</th><th>País</th><th>Status</th><th>Sugestão</th></tr>
+<tr><td>Lumin'Essence (Daily Spark)</td><td>DE</td><td class="bad">Inativo</td><td>Excluir: a marca ainda não lançou.</td></tr>
+<tr><td>Clearly (Not Coffee)</td><td>DE</td><td class="bad">Pausado</td><td>Excluir ou sinalizar.</td></tr>
+<tr><td>The Good Shroom Co</td><td>CA</td><td class="bad">Provável inativo</td><td>Excluir.</td></tr>
+<tr><td>Cafegenix</td><td>CA</td><td class="warn">Incerto</td><td>Sinalizar.</td></tr>
+<tr><td>Solve Labs</td><td>UK</td><td class="warn">Incerto</td><td>Confirmar a venda no UK. A origem foi corrigida para Polônia.</td></tr>
+<tr><td>Myprotein THE Coffee Boost</td><td>UK</td><td class="warn">Incerto</td><td>Sinalizar.</td></tr>
+<tr><td>Le-Vel Thrive Café</td><td>EUA</td><td class="warn">Incerto</td><td>Sinalizar.</td></tr>
+<tr><td>Mind Lab Pro</td><td>UK</td><td>Ativo</td><td>É cápsula, não bebida. Avaliar se entra no screening.</td></tr>
+</table></div>
+<p><small>Excluir os 3 inativos muda pouco as conclusões: Alemanha 21 e Canadá 17 players, sem troca de pilar líder. As contagens da planilha mantêm os 95 e a coluna "Ativo confirmado (1/0)" permite filtrar.</small></p>
+
+<h2>5. O que não foi revisto</h2>
+<ul>
+<li><b>Pilar principal:</b> revisei os casos discutíveis do handover (Laird, Javy, Everyday Dose, Strong, Reformed, VitaCup, Hunter &amp; Gather, NO CRASH, Starmount) e mantive todos, porque o portfólio atual confirma o pilar.</li>
+<li><b>Sabores:</b> só a Shyne foi corrigida. As flags de sabor não foram confrontadas sistematicamente com os catálogos.</li>
+<li><b>Seguidores no Instagram:</b> não foram atualizados.</li>
+<li>O lion's mane continua sem confirmação na Coffee 2.0 (o site fala em "7 cogumelos" sem listar quais).</li>
+<li>Os números do relatório <code>tendencias_campeas_uk_de_eua_ca_v2.html</code> (lion's mane, matcha, proteína nos EUA e cafeína nos EUA) precisam ser atualizados para bater com a v5. Esse arquivo não estava nesta sessão.</li>
+</ul>
+
+<h2>Fontes principais (status)</h2>
+<ul>
+<li>Catálogos oficiais (Shopify) de 61 marcas e home de 82 sites (os demais via varejo e notícias), baixados em 04/11/2026. As URLs estão na coluna "Evidência do status".</li>
+<li><a href="https://droptime.de/preisvergleich/protein-kaffee">droptime.de – comparador de café proteico (DE)</a></li>
+<li><a href="https://www.sunday.de/protein-coffee-natural-vanilla.html">Sunday Natural – Protein Coffee (sunday.de)</a></li>
+<li><a href="https://www.tipranks.com/news/company-announcements/good-shroom-co-inc-rebrands-and-expands-market-reach">Good Shroom → Mercanto Holdings (TipRanks)</a> · <a href="https://newswire.ca/news-releases/the-good-shroom-co-inc-announces-the-effective-date-of-the-name-change-to-mercanto-holdings-inc--872705828.html">Newswire.ca</a></li>
+<li><a href="https://www.okazje.info.pl/szukaj/solve-labs-mushroom-coffee-kawa-z-rhodiola-i-lion-s-mane-330g/ceny.html">Solve Labs – café com lion's mane e rhodiola (PL)</a> · <a href="https://gemini.pl/solve-labs-lion-s-mane-mushroom-100-g-0099748">fabricante em Lublin</a></li>
+<li><a href="https://www.hollandandbarrett.com/shop/product/unconform-oat-mlk-cold-brew-flat-white-coffee-250ml-6100020954">Unconform na Holland &amp; Barrett</a></li>
+<li><a href="https://www.skinnymixes.com/collections/proffee-stix">Skinny Mixes – Proffee Stix</a></li>
+<li><a href="https://www.bevnet.com/pr/2026/03/23/bulletproof-adds-new-vanilla-flavor-to-its-high-protein-iced-coffee-line">Bulletproof – High Protein Iced Coffee (BevNET, 03/2026)</a></li>
+<li><a href="https://www.nombase.com/newswire/2026/06/25/laird-superfood-launches-protein-matcha-with-10-grams-of-protein-functional-mushrooms-and-electrolytes">Laird – Protein Matcha (06/2026)</a></li>
+<li><a href="https://www.bevnet.com/news/2025/projo-takes-title-as-new-beverage-showdown-30-winner">Projo (BevNET)</a> · <a href="https://www.target.com/p/-/A-95010331">Projo na Target</a></li>
+<li><a href="https://retail-insider.com/retail-insider/2026/01/collective-arts-carves-out-a-new-space-in-clean-functional-energy-with-botany/">Botany Energy (Retail Insider, 01/2026)</a></li>
+<li><a href="https://www.costco.ca/br%c3%bcst-protein-coffee-mocha%2c-18-x-330-ml.product.4000259678.html">brüst na Costco.ca</a></li>
+<li><a href="https://macafeine.ca/en/blogs/news-en/mushup-les-cafes-aux-champignons">MushUp (Ma Caféine)</a> · <a href="https://www.vitasave.ca/products/sproos-mct-ghee-creamer-unflavored">Sproos (Vitasave)</a> · <a href="https://www.walmart.com/ip/653096476">Rapidfire (Walmart)</a></li>
+<li><a href="https://www.thegrocer.co.uk/news/bloom-moves-on-uk-female-energy-drinks-market-after-us-breakthrough/720251.article">Bloom no UK (The Grocer)</a> · <a href="https://healf.com/products/everyday-dose-matcha">Everyday Dose Matcha+ (Healf)</a></li>
+<li><a href="https://www.medino.com/product/planet-paleo-pure-collagen-keto-coffee-15-sachets">Planet Paleo (Medino)</a> · <a href="https://www.docmorris.de/pilzkaffee-mit-lions-mane-mushroom-coffee-aus-ganzen-bio-b/Y4VF2PPX">mindbrew (DocMorris)</a> · <a href="https://www.shop-apotheke.at/arzneimittel/D8115063/nu3-focus-mushroom-coffee.htm">nu3 (Shop Apotheke)</a></li>
+</ul>
+</main></body></html>
