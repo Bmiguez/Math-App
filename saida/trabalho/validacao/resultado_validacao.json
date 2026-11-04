@@ -1,16 +1,26 @@
 {
- "n_amostra": 238,
- "inclusao_concorda": 237,
+ "n_amostra": 306,
+ "inclusao_concorda": 304,
  "por_marca": {
+  "BS": {
+   "n": 25,
+   "inclusao_concorda": 25,
+   "codigos_identicos": 19
+  },
   "CA": {
-   "n": 138,
-   "inclusao_concorda": 138,
-   "codigos_identicos": 118
+   "n": 151,
+   "inclusao_concorda": 151,
+   "codigos_identicos": 129
   },
   "DE": {
-   "n": 100,
-   "inclusao_concorda": 99,
-   "codigos_identicos": 73
+   "n": 103,
+   "inclusao_concorda": 102,
+   "codigos_identicos": 75
+  },
+  "UC": {
+   "n": 27,
+   "inclusao_concorda": 26,
+   "codigos_identicos": 19
   }
  },
  "por_codigo": {
@@ -21,111 +31,111 @@
    "n_recod": 1
   },
   "CB": {
-   "concordancia": 0.9953,
-   "kappa": 0.798,
-   "n_orig": 3,
-   "n_recod": 2
+   "concordancia": 0.9892,
+   "kappa": 0.764,
+   "n_orig": 8,
+   "n_recod": 5
   },
   "CON": {
+   "concordancia": 0.9928,
+   "kappa": 0.83,
+   "n_orig": 5,
+   "n_recod": 7
+  },
+  "COR": {
+   "concordancia": 0.9892,
+   "kappa": 0.722,
+   "n_orig": 4,
+   "n_recod": 7
+  },
+  "ENE": {
+   "concordancia": 0.9856,
+   "kappa": 0.959,
+   "n_orig": 61,
+   "n_recod": 65
+  },
+  "ENT": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 9,
+   "n_recod": 9
+  },
+  "FOC": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 27,
+   "n_recod": 27
+  },
+  "GER": {
+   "concordancia": 0.9892,
+   "kappa": 0.941,
+   "n_orig": 30,
+   "n_recod": 27
+  },
+  "HAB": {
+   "concordancia": 0.9784,
+   "kappa": 0.928,
+   "n_orig": 51,
+   "n_recod": 51
+  },
+  "IND": {
    "concordancia": 1.0,
    "kappa": 1.0,
    "n_orig": 2,
    "n_recod": 2
   },
-  "COR": {
-   "concordancia": 0.9858,
-   "kappa": 0.721,
-   "n_orig": 4,
+  "PRA": {
+   "concordancia": 0.9604,
+   "kappa": 0.873,
+   "n_orig": 48,
+   "n_recod": 59
+  },
+  "SAB": {
+   "concordancia": 0.9892,
+   "kappa": 0.975,
+   "n_orig": 191,
+   "n_recod": 194
+  },
+  "SAU": {
+   "concordancia": 0.9964,
+   "kappa": 0.955,
+   "n_orig": 12,
+   "n_recod": 11
+  },
+  "SEF": {
+   "concordancia": 0.9928,
+   "kappa": 0.854,
+   "n_orig": 6,
+   "n_recod": 8
+  },
+  "SUB": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 7,
    "n_recod": 7
   },
-  "ENE": {
-   "concordancia": 0.9953,
-   "kappa": 0.984,
-   "n_orig": 37,
-   "n_recod": 38
-  },
-  "ENT": {
+  "TEX": {
    "concordancia": 1.0,
    "kappa": 1.0,
-   "n_orig": 4,
-   "n_recod": 4
+   "n_orig": 18,
+   "n_recod": 18
   },
-  "FOC": {
+  "TRE": {
    "concordancia": 1.0,
    "kappa": 1.0,
-   "n_orig": 15,
-   "n_recod": 15
+   "n_orig": 32,
+   "n_recod": 32
   },
-  "GER": {
-   "concordancia": 1.0,
-   "kappa": 1.0,
-   "n_orig": 14,
-   "n_recod": 14
-  },
-  "HAB": {
-   "concordancia": 0.9905,
-   "kappa": 0.97,
-   "n_orig": 41,
-   "n_recod": 41
-  },
-  "IND": {
+  "nATE": {
    "concordancia": 1.0,
    "kappa": 1.0,
    "n_orig": 1,
    "n_recod": 1
   },
-  "PRA": {
-   "concordancia": 0.9573,
-   "kappa": 0.885,
-   "n_orig": 47,
-   "n_recod": 56
-  },
-  "SAB": {
-   "concordancia": 0.9905,
-   "kappa": 0.973,
-   "n_orig": 162,
-   "n_recod": 164
-  },
-  "SAU": {
-   "concordancia": 1.0,
-   "kappa": 1.0,
-   "n_orig": 5,
-   "n_recod": 5
-  },
-  "SEF": {
-   "concordancia": 0.9905,
-   "kappa": 0.795,
-   "n_orig": 4,
-   "n_recod": 6
-  },
-  "SUB": {
-   "concordancia": 1.0,
-   "kappa": 1.0,
-   "n_orig": 4,
-   "n_recod": 4
-  },
-  "TEX": {
-   "concordancia": 1.0,
-   "kappa": 1.0,
-   "n_orig": 14,
-   "n_recod": 14
-  },
-  "TRE": {
-   "concordancia": 1.0,
-   "kappa": 1.0,
-   "n_orig": 19,
-   "n_recod": 19
-  },
-  "nATE": {
-   "concordancia": 1.0,
-   "kappa": 1.0,
-   "n_orig": 0,
-   "n_recod": 0
-  },
   "nDIS": {
-   "concordancia": 1.0,
-   "kappa": 1.0,
-   "n_orig": 5,
+   "concordancia": 0.9964,
+   "kappa": 0.907,
+   "n_orig": 6,
    "n_recod": 5
   },
   "nEFE": {
@@ -137,8 +147,8 @@
   "nENT": {
    "concordancia": 1.0,
    "kappa": 1.0,
-   "n_orig": 0,
-   "n_recod": 0
+   "n_orig": 1,
+   "n_recod": 1
   },
   "nING": {
    "concordancia": 1.0,
@@ -149,8 +159,8 @@
   "nOUT": {
    "concordancia": 1.0,
    "kappa": 1.0,
-   "n_orig": 1,
-   "n_recod": 1
+   "n_orig": 2,
+   "n_recod": 2
   },
   "nPED": {
    "concordancia": 1.0,
@@ -161,20 +171,20 @@
   "nPRE": {
    "concordancia": 1.0,
    "kappa": 1.0,
-   "n_orig": 0,
-   "n_recod": 0
+   "n_orig": 3,
+   "n_recod": 3
   },
   "nREN": {
    "concordancia": 1.0,
    "kappa": 1.0,
-   "n_orig": 0,
-   "n_recod": 0
+   "n_orig": 1,
+   "n_recod": 1
   },
   "nSAB": {
    "concordancia": 1.0,
    "kappa": 1.0,
-   "n_orig": 12,
-   "n_recod": 12
+   "n_orig": 17,
+   "n_recod": 17
   },
   "nTEX": {
    "concordancia": 1.0,
@@ -183,7 +193,7 @@
    "n_recod": 0
   }
  },
- "n_ambos_incluidos": 211,
+ "n_ambos_incluidos": 278,
  "divergencias": [
   {
    "id": "CA-00549",
@@ -521,6 +531,286 @@
    "inc": [
     1,
     1
+   ]
+  },
+  {
+   "id": "BS-00009",
+   "orig": [
+    "ENE",
+    "HAB",
+    "TRE"
+   ],
+   "recod": [
+    "ENE",
+    "TRE"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "BS-00013",
+   "orig": [
+    "ENE",
+    "HAB",
+    "SAB"
+   ],
+   "recod": [
+    "ENE",
+    "SAB"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "BS-00015",
+   "orig": [
+    "CB",
+    "GER"
+   ],
+   "recod": [
+    "CB",
+    "CON"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "BS-00020",
+   "orig": [
+    "CB",
+    "CON",
+    "ENE",
+    "FOC",
+    "SAB",
+    "TRE"
+   ],
+   "recod": [
+    "CON",
+    "ENE",
+    "FOC",
+    "HAB",
+    "SAB",
+    "TRE"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "BS-00023",
+   "orig": [
+    "TRE"
+   ],
+   "recod": [
+    "ENE",
+    "TRE"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "BS-00024",
+   "orig": [
+    "FOC",
+    "TRE"
+   ],
+   "recod": [
+    "ENE",
+    "FOC",
+    "TRE"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "CA-02829",
+   "orig": [
+    "ENT",
+    "SAB"
+   ],
+   "recod": [
+    "ENT",
+    "HAB",
+    "SAB"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "CA-02832",
+   "orig": [
+    "ENT",
+    "GER"
+   ],
+   "recod": [
+    "ENT"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "DE-01606",
+   "orig": [
+    "GER"
+   ],
+   "recod": [
+    "SAB"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "UC-00003",
+   "orig": [
+    "SAB",
+    "nPRE"
+   ],
+   "recod": [
+    "PRA",
+    "SAB",
+    "nPRE"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "UC-00006",
+   "orig": [
+    "SAB",
+    "TEX",
+    "TRE"
+   ],
+   "recod": [
+    "ENE",
+    "SAB",
+    "TEX",
+    "TRE"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "UC-00009",
+   "orig": [
+    "CON",
+    "ENE",
+    "HAB",
+    "SAB",
+    "TEX",
+    "nDIS",
+    "nPRE",
+    "nREN"
+   ],
+   "recod": [
+    "CON",
+    "ENE",
+    "HAB",
+    "SAB",
+    "TEX",
+    "nPRE",
+    "nREN"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "UC-00012",
+   "orig": [
+    "ENE",
+    "SAB",
+    "SAU",
+    "TEX",
+    "TRE"
+   ],
+   "recod": [
+    "ENE",
+    "PRA",
+    "SAB",
+    "SAU",
+    "TEX",
+    "TRE"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "UC-00021",
+   "orig": [
+    "GER"
+   ],
+   "recod": [
+    "CON",
+    "GER"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "UC-00023",
+   "orig": [
+    "CB",
+    "SAB"
+   ],
+   "recod": [
+    "SAB"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "UC-00025",
+   "orig": [
+    "SAU",
+    "TRE"
+   ],
+   "recod": [
+    "TRE"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "UC-00027",
+   "orig": [
+    "nENT"
+   ],
+   "recod": [
+    "nENT"
+   ],
+   "inc": [
+    1,
+    0
    ]
   }
  ]

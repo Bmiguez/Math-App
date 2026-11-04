@@ -1,4 +1,4 @@
-"""Gera saida/reviews_cafe_funcional_v3.xlsx a partir de saida/trabalho/base_final.json.
+"""Gera saida/reviews_cafe_funcional_v4.xlsx a partir de saida/trabalho/base_final.json.
 Resultados e comparações são fórmulas (COUNTIFS) sobre a aba Base_reviews.
 Uso: python scripts/monta_planilha.py <arquivo_saida.xlsx>
 """
@@ -10,7 +10,7 @@ from openpyxl.utils import get_column_letter as L
 RAIZ = pathlib.Path(__file__).resolve().parent.parent
 T = RAIZ / 'saida' / 'trabalho'
 B = RAIZ / 'saida' / 'bruto'
-OUT = sys.argv[1] if len(sys.argv) > 1 else str(RAIZ / 'saida' / 'reviews_cafe_funcional_v3.xlsx')
+OUT = sys.argv[1] if len(sys.argv) > 1 else str(RAIZ / 'saida' / 'reviews_cafe_funcional_v4.xlsx')
 CA, DE = 'Caffeine Army (SuperCoffee)', 'Desincoffee (Super Nutrition/Desinchá)'
 BS, UC = 'Brainstorm Coffee (Essential Nutrition)', 'Ultracoffee (3corações / Plant Power)'
 VC, MC = 'V-Coffee Energy Boost (Vitafor)', 'Mega Coffee (Allure)'
@@ -244,6 +244,9 @@ for dom, nome in LOJA.items():
     LINHAS_VAREJO.append([f'{nome} ({ps[0]["widget"].capitalize() if ps else "—"})', ' + '.join(marcas_loja) or '—', anun, col, col, val, (col / anun) if anun else '—', D,
                           f'Busca no catálogo VTEX ({len(ps)} produtos das 6 marcas) + widget de reviews público',
                           'Drogaria SP coletada também na v2 (mesmas reviews, não duplicadas). ' + ('Sem reviews com texto para V-Coffee e Mega Coffee.' if ps else '')])
+_mlf = sorted(glob.glob(str(B / 'mercadolivre' / 'produtos_*.json')))
+_ml = json.load(open(_mlf[-1])) if _mlf else []
+ML_PROD, ML_ATIVOS = len(_ml), sum(1 for x in _ml if x.get('items'))
 COB = [
     ['Site Desinchá (Loox) – inclui Super Nutrition', 'DE', anun_loox, n('Site Desinchá (Loox)'), loox_cafe, v('Site Desinchá (Loox)'), loox_cafe / anun_loox, D,
      'HTML das 59 páginas de produto de supercafé (40 reviews mais recentes por página)',
@@ -263,8 +266,10 @@ COB = [
      'HTML das 12 páginas de Ultracoffee (widget Yourviews renderizado)', 'Cobertura total do site.'],
     ['Site Vitafor', 'VC', 0, 0, 0, 0, '—', D, 'API pública do app VTEX Reviews & Ratings', 'O app está instalado, mas nenhum produto da loja tem review publicada.'],
     ['Site Allure Pharma', 'MC', 'não confirmado', 0, 0, 0, 0, D, '—', 'HTTP 403 (bloqueio anti-robô). Não coletado.'],
-    ['Mercado Livre', 'todas', '8.600+ (CA, 03/11); 267+ (DE); demais não contadas', 0, 0, v('Mercado Livre'), 0, D, '—',
-     'robots.txt do Mercado Livre bloqueia ClaudeBot/Claude-User em todo o site, e a API exige token (403). Não coletado. 4 linhas de DE herdadas da v1.'],
+    ['Mercado Livre', 'todas', '8.600+ (CA, 03/11); 267+ (DE); demais não contadas', 0, 0, v('Mercado Livre'), 0, D,
+     f'API oficial (app registrado): catálogo /products/search encontrou {ML_PROD} produtos das marcas, {ML_ATIVOS} com anúncio ativo (nenhum de Mega Coffee)',
+     'robots.txt do site bloqueia agentes Claude; por isso só a API oficial. Na API, /reviews/item e /items respondem 403 "access denied" com token de app E com token de usuário (OAuth, testado em 04/11/2026): '
+     'a API não libera opiniões de anúncios de terceiros. /sites/MLB/search também 403. Não coletado. 4 linhas de DE herdadas da v1.'],
     ['Magazine Luiza', 'todas', 'não confirmado', 0, 0, v('Magazine Luiza'), 0, D, '—', 'HTTP 403 (bloqueio anti-robô) até no robots.txt. 26 linhas herdadas da v1 (só paráfrase).'],
     ['Amazon Brasil', 'todas', '~907 (CA, via Buscapé)', 0, 0, 0, 0, D, '—', 'robots.txt bloqueia agentes Claude. Não coletado.'],
     ['Buscapé / Zoom (réplica da Amazon)', 'CA', '~907', 0, 0, v('Amazon (via Buscapé)') + v('Amazon (via Zoom)'), 0, D, '—', 'robots.txt bloqueia agentes Claude. 3 linhas herdadas da v1.'],
@@ -333,10 +338,15 @@ wf.column_dimensions['A'].width = 70
 # ---------------- Validacao ----------------
 wq = wb.create_sheet('Validacao')
 wq['A1'] = 'Validação da codificação (amostra recodificada às cegas)'; wq['A1'].font = TIT
-wq['A2'] = (f"Amostra aleatória (semente 20261104): {VAL['por_marca']['CA']['n']} CA (10%) + {VAL['por_marca']['DE']['n']} DE (mínimo 100). "
+NOVAS = {x['id'] for x in json.load(open(T / 'validacao' / 'recod_5.json'))}
+div_nov = [x for x in VAL['divergencias'] if x['id'] in NOVAS]
+inc_nov = sum(1 for x in div_nov if x['inc'][0] != x['inc'][1])
+wq['A2'] = (f"Rodada v2: amostra aleatória (semente 20261104) de {VAL['por_marca']['CA']['n'] - sum(i.startswith('CA') for i in NOVAS)} CA (10%) + {VAL['por_marca']['DE']['n'] - sum(i.startswith('DE') for i in NOVAS)} DE (mínimo 100). "
+            f"Rodada v4: todas as {len(NOVAS)} reviews novas da v3 (BS {sum(i.startswith('BS') for i in NOVAS)}, UC {sum(i.startswith('UC') for i in NOVAS)}, CA {sum(i.startswith('CA') for i in NOVAS)}, DE {sum(i.startswith('DE') for i in NOVAS)}): "
+            f"inclusão concordante em {len(NOVAS) - inc_nov} de {len(NOVAS)}, códigos idênticos em {len(NOVAS) - len(div_nov)}. Tabela abaixo = as duas rodadas juntas. "
             f"Inclusão concordante em {VAL['inclusao_concorda']} de {VAL['n_amostra']}. Concordância por código calculada sobre as {VAL['n_ambos_incluidos']} incluídas nos dois passes.")
 wq['A3'] = ('Limitação: recodificação feita pelo mesmo codificador (teste-reteste), sem acesso à primeira codificação, mas não é um segundo codificador independente. '
-            'Nenhum código ficou abaixo de 85%; não houve recodificação.')
+            'Nenhum código ficou abaixo de 85%; a codificação original foi mantida (a recodificação só mede a estabilidade). Divergências da rodada v4: ENE só na recodificação em 2 casos de BS (energia em BS iria de 52% a 60%); HAB, CB, GER e PRA em casos limítrofes, nos dois sentidos.')
 cab(wq, 5, ['Código', 'Concordância', 'Kappa de Cohen', 'n (1º passe)', 'n (recodificação)'])
 for i, (c, d) in enumerate(VAL['por_codigo'].items(), 6):
     wq.cell(row=i, column=1, value=c); wq.cell(row=i, column=2, value=d['concordancia']).number_format = '0.0%'
@@ -347,7 +357,7 @@ wm = wb.create_sheet('LEIA-ME', 0)
 nCA = sum(1 for r in F if r['Incluir'] and r['Marca'] == CA); nDE = sum(1 for r in F if r['Incluir'] and r['Marca'] == DE)
 nBS = sum(1 for r in F if r['Incluir'] and r['Marca'] == BS); nUC = sum(1 for r in F if r['Incluir'] and r['Marca'] == UC)
 txt = [
-    ('Base de reviews codificada: cafés funcionais (6 marcas) – v3', TIT),
+    ('Base de reviews codificada: cafés funcionais (6 marcas) – v4', TIT),
     ('Gerado em 04/11/2026. Coleta automatizada de páginas públicas, respeitando robots.txt e limite de 1 requisição a cada 1,2–1,5 s.', None),
     ('', None),
     ('O que tem aqui', B1),
@@ -360,7 +370,8 @@ txt = [
     ('Cobertura: volume anunciado x coletado x válido por fonte, método e bloqueios.', None),
     ('Reclame_Aqui: contagens da v1 (o site bloqueou em 04/11).', None),
     ('Formulario_CA: respostas estruturadas (objetivo, idade, recomendaria) de quem avaliou no site da Caffeine Army.', None),
-    ('Validacao: concordância e kappa da recodificação cega de 238 reviews (CA e DE, rodada v2).', None),
+    (f"Validacao: concordância e kappa da recodificação cega de {VAL['n_amostra']} reviews (238 de CA e DE na rodada v2 + as 68 novas da v3 na rodada v4).", None),
+    ('O que mudou da v3 para a v4: (a) recodificação cega das 68 reviews novas da v3 (BS, UC, CA, DE), agora na aba Validacao; (b) Mercado Livre tentado pela API oficial, com token de app e de usuário: a API não libera opiniões de anúncios de terceiros (detalhe na Cobertura). Nenhuma linha, código ou resultado mudou: Base_reviews e Resultados são idênticos aos da v3.', None),
     ('O que mudou da v2 para a v3: entraram Brainstorm, Ultracoffee, V-Coffee e Mega Coffee, mais 4 varejistas (Pacheco, Americanas, Pague Menos, Drogal) e o Home Tester do Ultracoffee. Nenhuma linha ou código da v2 foi alterado; IDs preservados.', None),
     ('', None),
     ('Privacidade', B1),
@@ -369,11 +380,11 @@ txt = [
     ('', None),
     ('Limitações (leia antes de citar os números)', B1),
     ('1. V-Coffee e Mega Coffee: ZERO reviews nas fontes acessíveis (site Vitafor sem reviews; site Allure bloqueado; farmácias sem avaliações). Brainstorm (n = 25) e Ultracoffee (n = 27) têm n pequeno: margem de erro de ±20 p.p.; use só a ordem dos temas.', None),
-    ('2. Marketplaces (Mercado Livre, Amazon, Magalu) e Reclame Aqui bloquearam agentes automáticos e não entraram, salvo 33 linhas herdadas da v1. CA e DE são medidas quase só pelo próprio site (94% e 98%).', None),
+    ('2. Marketplaces (Mercado Livre, Amazon, Magalu) e Reclame Aqui bloquearam agentes automáticos e não entraram (no Mercado Livre, nem pela API oficial), salvo 33 linhas herdadas da v1. CA e DE são medidas quase só pelo próprio site (94% e 98%).', None),
     ('3. Site da Caffeine Army: 91% das reviews válidas foram publicadas em nov–dez/2025, em formato de "ranking de sabores". Isso indica campanha de avaliação solicitada; o resultado puxa SAB para cima e ENE, preço e barreiras para baixo. Use a coluna "sem o pico" e a coluna "fora do site" como controle.', None),
     ('4. Desincoffee: só as 40 reviews mais recentes de cada página (jul–out/2026, majoritariamente). Não é amostra aleatória, e não há controle "fora do site" com n útil (n = 4).', None),
     ('5. Notas: 94% das válidas da CA e 83% das do DE são 5 estrelas. Barreiras ficam sub-representadas nas duas; no site da CA fora do pico de nov–dez/2025, 28% citam alguma barreira (contra 4% no total).', None),
-    ('6. Codificação feita por um codificador, com recodificação cega de 10% de CA e DE (concordância ≥ 95,7% em todos os códigos; PRA é o mais instável, kappa 0,89). As 68 reviews novas da v3 não passaram por recodificação cega.', None),
+    ('6. Codificação feita por um codificador, com recodificação cega de 10% de CA e DE (concordância ≥ 96,0% em todos os códigos, somadas as rodadas v2 e v4; PRA é o mais instável, kappa 0,87). Na v4, as 68 reviews novas da v3 também foram recodificadas às cegas (detalhe na aba Validacao).', None),
     ('7. Margem de erro (95%): ±2,6 p.p. no total CA, ±4,8 p.p. no total DE, ±10,6 p.p. na CA fora do site, ±17 p.p. na CA EUA, ±20 p.p. em BS e UC.', None),
 ]
 for i, (t, f) in enumerate(txt, 1):

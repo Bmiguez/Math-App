@@ -20,7 +20,7 @@ for c in codes:
     pa, pb = sum(a) / n, sum(b) / n; pe = pa * pb + (1 - pa) * (1 - pb)
     kappa = (agree - pe) / (1 - pe) if pe < 1 else 1.0
     out['por_codigo'][c] = {'concordancia': round(agree, 4), 'kappa': round(kappa, 3), 'n_orig': sum(a), 'n_recod': sum(b)}
-for p in ('CA', 'DE'):
+for p in sorted({i[:2] for i in ids}):
     s = [i for i in ids if i.startswith(p)]
     out['por_marca'][p] = {'n': len(s), 'inclusao_concorda': sum(orig[i]['inc'] == rec[i]['inc'] for i in s),
                            'codigos_identicos': sum(set(orig[i]['c']) == set(rec[i]['c']) for i in s if orig[i]['inc'] and rec[i]['inc'])}
