@@ -9,3 +9,4 @@ saida/*.zip
 saida/trabalho/base_consolidada_v2.json
 saida/trabalho/base_final_v2.json
 saida/bruto_*.zip
+saida/*.bundle
