@@ -1,2 +1,8 @@
 # Dados brutos de coleta (contêm nome de autor): ficam só locais
 saida/bruto/
+# Arquivos de trabalho com texto integral das reviews (podem conter nomes/endereços escritos pelos autores)
+saida/trabalho/base_consolidada.json
+saida/trabalho/base_final.json
+saida/trabalho/lotes/
+saida/trabalho/validacao/cego_*.txt
+saida/*.zip

@@ -1,0 +1,527 @@
+{
+ "n_amostra": 238,
+ "inclusao_concorda": 237,
+ "por_marca": {
+  "CA": {
+   "n": 138,
+   "inclusao_concorda": 138,
+   "codigos_identicos": 118
+  },
+  "DE": {
+   "n": 100,
+   "inclusao_concorda": 99,
+   "codigos_identicos": 73
+  }
+ },
+ "por_codigo": {
+  "ASS": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 1,
+   "n_recod": 1
+  },
+  "CB": {
+   "concordancia": 0.9953,
+   "kappa": 0.798,
+   "n_orig": 3,
+   "n_recod": 2
+  },
+  "CON": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 2,
+   "n_recod": 2
+  },
+  "COR": {
+   "concordancia": 0.9858,
+   "kappa": 0.721,
+   "n_orig": 4,
+   "n_recod": 7
+  },
+  "ENE": {
+   "concordancia": 0.9953,
+   "kappa": 0.984,
+   "n_orig": 37,
+   "n_recod": 38
+  },
+  "ENT": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 4,
+   "n_recod": 4
+  },
+  "FOC": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 15,
+   "n_recod": 15
+  },
+  "GER": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 14,
+   "n_recod": 14
+  },
+  "HAB": {
+   "concordancia": 0.9905,
+   "kappa": 0.97,
+   "n_orig": 41,
+   "n_recod": 41
+  },
+  "IND": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 1,
+   "n_recod": 1
+  },
+  "PRA": {
+   "concordancia": 0.9573,
+   "kappa": 0.885,
+   "n_orig": 47,
+   "n_recod": 56
+  },
+  "SAB": {
+   "concordancia": 0.9905,
+   "kappa": 0.973,
+   "n_orig": 162,
+   "n_recod": 164
+  },
+  "SAU": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 5,
+   "n_recod": 5
+  },
+  "SEF": {
+   "concordancia": 0.9905,
+   "kappa": 0.795,
+   "n_orig": 4,
+   "n_recod": 6
+  },
+  "SUB": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 4,
+   "n_recod": 4
+  },
+  "TEX": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 14,
+   "n_recod": 14
+  },
+  "TRE": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 19,
+   "n_recod": 19
+  },
+  "nATE": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 0,
+   "n_recod": 0
+  },
+  "nDIS": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 5,
+   "n_recod": 5
+  },
+  "nEFE": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 1,
+   "n_recod": 1
+  },
+  "nENT": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 0,
+   "n_recod": 0
+  },
+  "nING": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 0,
+   "n_recod": 0
+  },
+  "nOUT": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 1,
+   "n_recod": 1
+  },
+  "nPED": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 1,
+   "n_recod": 1
+  },
+  "nPRE": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 0,
+   "n_recod": 0
+  },
+  "nREN": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 0,
+   "n_recod": 0
+  },
+  "nSAB": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 12,
+   "n_recod": 12
+  },
+  "nTEX": {
+   "concordancia": 1.0,
+   "kappa": 1.0,
+   "n_orig": 0,
+   "n_recod": 0
+  }
+ },
+ "n_ambos_incluidos": 211,
+ "divergencias": [
+  {
+   "id": "CA-00549",
+   "orig": [
+    "FOC",
+    "SAB",
+    "TRE"
+   ],
+   "recod": [
+    "ENE",
+    "FOC",
+    "SAB",
+    "TRE"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "CA-00664",
+   "orig": [
+    "SAB"
+   ],
+   "recod": [
+    "PRA",
+    "SAB"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "CA-00705",
+   "orig": [
+    "SAB"
+   ],
+   "recod": [
+    "PRA",
+    "SAB"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "CA-00748",
+   "orig": [
+    "ENE",
+    "FOC",
+    "SAB",
+    "SAU"
+   ],
+   "recod": [
+    "ENE",
+    "FOC",
+    "SAB",
+    "SAU",
+    "SEF"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "CA-00759",
+   "orig": [
+    "SAB",
+    "TRE"
+   ],
+   "recod": [
+    "COR",
+    "SAB",
+    "TRE"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "CA-00891",
+   "orig": [
+    "SAB"
+   ],
+   "recod": [
+    "PRA",
+    "SAB"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "CA-00923",
+   "orig": [
+    "PRA",
+    "TEX",
+    "nDIS"
+   ],
+   "recod": [
+    "PRA",
+    "SAB",
+    "TEX",
+    "nDIS"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "CA-00986",
+   "orig": [
+    "SAB"
+   ],
+   "recod": [
+    "PRA",
+    "SAB"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "CA-01007",
+   "orig": [
+    "CB",
+    "ENE",
+    "SAB"
+   ],
+   "recod": [
+    "ENE",
+    "SAB"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "CA-01146",
+   "orig": [
+    "SAB"
+   ],
+   "recod": [
+    "PRA",
+    "SAB"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "CA-01198",
+   "orig": [
+    "ENE",
+    "SAB",
+    "SAU"
+   ],
+   "recod": [
+    "COR",
+    "ENE",
+    "SAB",
+    "SAU"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "CA-01215",
+   "orig": [
+    "HAB",
+    "SAB"
+   ],
+   "recod": [
+    "HAB",
+    "PRA",
+    "SAB"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "CA-01913",
+   "orig": [
+    "ENE",
+    "FOC",
+    "SAB",
+    "TEX"
+   ],
+   "recod": [
+    "ENE",
+    "FOC",
+    "SAB",
+    "SEF",
+    "TEX"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "CA-02163",
+   "orig": [
+    "SAB"
+   ],
+   "recod": [
+    "PRA",
+    "SAB"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "CA-02222",
+   "orig": [
+    "ENE",
+    "HAB",
+    "SAB",
+    "TEX"
+   ],
+   "recod": [
+    "ENE",
+    "HAB",
+    "PRA",
+    "SAB",
+    "TEX"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "CA-02283",
+   "orig": [
+    "HAB",
+    "PRA",
+    "SAB"
+   ],
+   "recod": [
+    "PRA",
+    "SAB"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "CA-02362",
+   "orig": [
+    "HAB",
+    "SAB",
+    "TRE"
+   ],
+   "recod": [
+    "HAB",
+    "PRA",
+    "SAB",
+    "TRE"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "CA-02650",
+   "orig": [
+    "PRA"
+   ],
+   "recod": [
+    "PRA",
+    "SAB"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "CA-02671",
+   "orig": [
+    "PRA",
+    "SAB"
+   ],
+   "recod": [
+    "COR",
+    "PRA",
+    "SAB"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "DE-00176",
+   "orig": [],
+   "recod": [
+    "ENE",
+    "HAB",
+    "SAB",
+    "TRE"
+   ],
+   "inc": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "DE-01463",
+   "orig": [
+    "SAB"
+   ],
+   "recod": [
+    "HAB",
+    "SAB"
+   ],
+   "inc": [
+    1,
+    1
+   ]
+  }
+ ]
+}
