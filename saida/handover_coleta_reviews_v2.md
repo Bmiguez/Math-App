@@ -4,21 +4,17 @@ Data: 04/11/2026 · Branch: `claude/inspiring-fermi-jfpt01` · Repositório: `bm
 
 ## 1. Como começar a sessão nova (para a usuária)
 
-1. **Antes de abrir a sessão nova:**
-   - Reconecte o GitHub em https://claude.ai/customize/connectors?auth_start=github&auth_start_force=1
-   - Se ainda assim der 403, instale o app do Claude no repositório: https://github.com/apps/claude/installations/select_target
+1. **GitHub:** o código já está no branch `claude/inspiring-fermi-jfpt01` (push feito em 04/11). Abra a sessão nova nesse branch.
 2. **Mercado Livre (opcional):** siga `passo_a_passo_mercado_livre_v1.md` e grave `ML_CLIENT_ID` e `ML_CLIENT_SECRET` nas variáveis do ambiente. Libere também `api.mercadolibre.com` na rede do ambiente.
 3. **Abra a sessão nova** no mesmo repositório e anexe:
-   - **`pacote_nova_sessao_v1.zip`**: obrigatório se o GitHub continuar bloqueado. Ele traz o código, o histórico, a base de trabalho e os dados brutos.
+   - **`pacote_nova_sessao_v1.zip`**: obrigatório. Traz os dados brutos e a base de trabalho, que ficam fora do Git por privacidade, e um bundle do código como reserva.
    - **Este arquivo**: `handover_coleta_reviews_v2.md`.
 4. **Primeira mensagem sugerida:**
    > Leia o handover anexo e restaure o trabalho a partir do pacote. Depois: [escolha a tarefa, por exemplo "colete o Mercado Livre e gere a v4"].
 
 ## 2. Restauração (para o Claude da sessão nova)
 
-Se o branch já estiver no GitHub e contiver o commit `f390bdd` ou um posterior, use o GitHub e pule o bundle. Ainda assim, extraia `bruto/` e `trabalho/` do pacote.
-
-Caso contrário, restaure pelo bundle:
+O código está no GitHub (commit `4b55c7b` ou posterior): faça checkout do branch e copie `bruto/` e `trabalho/` do pacote. As linhas `git fetch` do bundle só são necessárias se o branch não estiver no GitHub.
 
 ```bash
 mkdir -p /tmp/pacote && cd /tmp/pacote && unzip -q <caminho_do_anexo>/pacote_nova_sessao_v1.zip
@@ -30,7 +26,7 @@ cp -r /tmp/pacote/trabalho/* saida/trabalho/
 python scripts/confere.py saida/reviews_cafe_funcional_v3.xlsx   # tem que sair 0 erros / 0 divergências
 ```
 
-Depois, tente `git push -u origin claude/inspiring-fermi-jfpt01`. Na sessão 2 o push deu 403 em todas as tentativas, e os commits ainda não estão no GitHub.
+Na sessão 2 o push deu 403 várias vezes antes de funcionar. Se voltar a dar 403, entregue um bundle como reserva.
 
 ## 3. Estado atual
 
@@ -97,16 +93,15 @@ Depois, tente `git push -u origin claude/inspiring-fermi-jfpt01`. Na sessão 2 o
 
 ## 4. Pendências, por prioridade
 
-1. **Push no GitHub:** os commits até `f390bdd` estão só no bundle.
-2. **Mercado Livre via API oficial:**
+1. **Mercado Livre via API oficial:**
    - Use a variável de ambiente `ML_CLIENT_ID`/`ML_CLIENT_SECRET` (token do app). Se o endpoint `/reviews/item/{id}` recusar esse token, peça à usuária a Etapa 3 do passo a passo, que gera `ML_ACCESS_TOKEN`, válido por 6 horas.
    - Busca de anúncios: `/sites/MLB/search?q=` para as 6 marcas, com o mesmo filtro de marca de `coleta_varejo.py`.
    - Escreva um coletor novo, `scripts/coleta_mercadolivre.py`, com saída em `saida/bruto/mercadolivre/`.
    - Os IDs são prefixados por marca e continuam a numeração de `ids_v2.json`.
    - Integre ao `consolida.py` como fonte nova, `Tipo_fonte = 'Marketplace independente'`. Ao entrar dado novo do Mercado Livre, substitua as linhas herdadas da v1 com fonte "Mercado Livre".
-3. **Amazon, Magalu e Reclame Aqui:** só por páginas que a usuária salvar no navegador (Ctrl+S, "Página completa") e anexar. A aba Reclame_Aqui ainda tem a contagem da v1, de 03/11.
-4. **Recodificação cega das 68 reviews novas da v3** (BS 25, UC 27, CA 13, DE 3). A validação atual (kappa) cobre só CA e DE.
-5. **Próxima entrega:** `saida/reviews_cafe_funcional_v4.xlsx` e `saida/resumo_reviews_v4.md`, no mesmo formato da v3. Não sobrescrever v2 nem v3.
+2. **Amazon, Magalu e Reclame Aqui:** só por páginas que a usuária salvar no navegador (Ctrl+S, "Página completa") e anexar. A aba Reclame_Aqui ainda tem a contagem da v1, de 03/11.
+3. **Recodificação cega das 68 reviews novas da v3** (BS 25, UC 27, CA 13, DE 3). A validação atual (kappa) cobre só CA e DE.
+4. **Próxima entrega:** `saida/reviews_cafe_funcional_v4.xlsx` e `saida/resumo_reviews_v4.md`, no mesmo formato da v3. Não sobrescrever v2 nem v3.
 
 ## 5. Regras que valem para a sessão nova
 
